@@ -10,23 +10,21 @@ class Enemy;
 class Entity;
 
 class Core {
+	float timer = 0.f;
 	float enemyHealth = 20.f;
 	int enemyDamage = 2;
 	int enemyArmor = 10;
 	int enemySpeed = 0;
-
 	int stage = 0;
-	bool fightFinished = false;
-	bool playerWon = false;
 
 	std::vector<Item*> itemPool = std::vector<Item*>();
+	int levelUpTarget = 1;
+	int levelUpCurrent = 0;
 
 	std::string fightLog;
 
 	Player* player = nullptr;
 	Enemy* enemy = nullptr;
-	int levelUpTarget = 1;
-	int levelUpCurrent = 0;
 
 	static bool ChanceRoll(int totalChance, int myPercentChance);
 	void Fight(Entity* attacker, Entity* target, Action action);
@@ -36,11 +34,13 @@ class Core {
 	void AssignItems();
 	void StartRound();
 	void LogStats() const;
+	bool fightFinished = false;
+	bool playerWon = false;
 public:
-	static constexpr float ArmorConstant = 400.f;
 	bool LoopEnded;
+	static constexpr float ArmorConstant = 400.f;
 
     void Start();
-	void Update();
+	void Update(float deltaTime);
 	void End();
 };

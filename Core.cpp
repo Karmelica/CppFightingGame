@@ -159,7 +159,7 @@ void Core::LogStats() const
 	 std::cout << "\n";
  }
 
-void Core::Update()
+void Core::Update(float deltaTime)
 {
 	if (enemy == nullptr || player == nullptr) {
 		return;
