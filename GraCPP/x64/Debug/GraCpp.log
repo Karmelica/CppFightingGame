@@ -1,0 +1,12 @@
+﻿  Enemy.cpp
+C:\Users\Damian\Desktop\Moje Projekty\cpp\Gra\Enemy.cpp(9,83): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Damian\Desktop\Moje Projekty\cpp\Gra\Enemy.cpp(9,27): warning C4244: "inicjowanie": konwersja z "int" do "const float", możliwa utrata danych
+  Entity.cpp
+C:\Users\Damian\Desktop\Moje Projekty\cpp\Gra\Entity.cpp(50,19): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+  Item.cpp
+  Core.cpp
+C:\Users\Damian\Desktop\Moje Projekty\cpp\Gra\Core.cpp(151,13): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+  main.cpp
+  Player.cpp
+  Generowanie kodu...
+  GraCpp.vcxproj -> C:\Users\Damian\Desktop\Moje Projekty\cpp\Gra\x64\Debug\GraCpp.exe
