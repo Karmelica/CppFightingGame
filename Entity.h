@@ -12,11 +12,12 @@ public:
 	float CurrentHealth;
 	float CurrentMaxHealth;
 	float BaseMaxHealth;
+	float BaseAttackCooldown = 3;
+	float CurrentAttackCooldown = 0;
 	int Damage;
+	int CurrentDamage;
 	int CurrentArmor;
 	int BaseArmor;
-	int BaseSpeed = 0;
-	int CurrentSpeed = 0;
 	int CritChance = 1;
 
 	int CalculateCritChance() const;

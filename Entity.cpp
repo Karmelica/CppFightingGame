@@ -1,5 +1,6 @@
 ﻿#include "Entity.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "Core.h"
@@ -12,7 +13,7 @@ void Entity::CalculateStatsFromItems() {
 	CurrentMaxHealth = BaseMaxHealth;
 
 	for (const auto& item : Items) {
-		CurrentMaxHealth += item.first->maxHealth * item.second;
+		CurrentMaxHealth += item.first->MaxHealth * item.second;
 		switch (item.first->special)
 		{
 		case none:
@@ -34,22 +35,28 @@ void Entity::CalculateStatsFromItems() {
 	//Armor
 	CurrentArmor =  BaseArmor;
 	for (const auto& item : Items) {
-		CurrentArmor += item.first->armor * item.second;
+		CurrentArmor += item.first->Armor * item.second;
+	}
+	
+	//Damage
+	CurrentDamage =  Damage;
+	for (const auto& item : Items) {
+		CurrentDamage += item.first->Damage * item.second;
 	}
 
-	//CurrentSpeed
-	CurrentSpeed = BaseSpeed;
+	//CurrentAttackCooldown
+	CurrentAttackCooldown = BaseAttackCooldown;
 	for (const auto& item : Items) {
-		CurrentSpeed += item.first->speed * item.second;
+		CurrentAttackCooldown += item.first->Cdr * item.second;
 	}
+	CurrentAttackCooldown = std::max(CurrentAttackCooldown, 0.1f);
 }
 
 float Entity::CalculateDamage(Entity* target, int critChance, bool didCrit) const
 {
 	float targetHealthDamage;
-	float baseDamage = Damage;
+	float baseDamage = CurrentDamage;
 	for (const auto& item : Items) {
-		baseDamage += item.first->damage * item.second;
 		switch (item.first->special) {
 		case none:
 			break;
@@ -57,10 +64,10 @@ float Entity::CalculateDamage(Entity* target, int critChance, bool didCrit) cons
 			baseDamage += (CurrentMaxHealth * 0.01f) * (5 + item.second);
 			break;
 		case ArmorToDamage:
-			baseDamage += (CurrentArmor * 0.01f) * (1 + item.second);
+			baseDamage += (CurrentArmor * 0.01f) * (5 + item.second);
 			break;
 		case EnemyHealthPercent:
-			targetHealthDamage = (target->CurrentMaxHealth * 0.01f) * (5 + item.second);
+			targetHealthDamage = (target->CurrentMaxHealth * 0.05f) * item.second;
 			baseDamage += targetHealthDamage;
 			break;
 		default: 
@@ -74,7 +81,7 @@ float Entity::CalculateDamage(Entity* target, int critChance, bool didCrit) cons
 	}
 
 	for (const auto& item : Items) {
-		totalDamage *= 1 + (item.first->damageMultip * item.second);
+		totalDamage *= 1 + (item.first->DamageMultip * item.second);
 	}
 
 	return totalDamage;
@@ -91,25 +98,22 @@ int Entity::CalculateCritChance() const
 {
 	int totalCritChance = CritChance;
 	for (const auto& item : Items) {
-		totalCritChance += item.first->crit * item.second;
+		totalCritChance += item.first->Crit * item.second;
 	}
 	return totalCritChance;
 }
 
 float Entity::CalculateReduction() const
 {
-	int totalArmor = CurrentArmor;
-	for (const auto& item : Items) {
-		totalArmor += item.first->armor * item.second;
-	}
-	return 1 - totalArmor / (totalArmor + Core::ArmorConstant);
+	const int totalArmor = CurrentArmor;
+	return 1 - static_cast<float>(totalArmor) / (static_cast<float>(totalArmor) + Core::ArmorConstant);
 }
 
 std::string Entity::GiveRandomItem(const std::vector<Item*>* itemPool) {
 	const int r = rand() % itemPool->size();
 	Item* item = itemPool->at(r);
 	AddItem(item);
-	return item->name;
+	return item->Name;
 }
 
 void Entity::Heal(const float health)
@@ -125,7 +129,7 @@ void Entity::TakeDamage(const float damage)
 
 void Entity::SetSpeed(int newSpeed)
 {
-	CurrentSpeed = newSpeed;
+	CurrentAttackCooldown = newSpeed;
 }
 
 void Entity::SetArmor(int newArmor)

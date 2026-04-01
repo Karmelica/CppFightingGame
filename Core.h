@@ -10,11 +10,12 @@ class Enemy;
 class Entity;
 
 class Core {
-	float timer = 0.f;
+	float playerCD = 0.f;
+	float enemyCD = 0.f;
 	float enemyHealth = 20.f;
 	int enemyDamage = 2;
 	int enemyArmor = 10;
-	int enemySpeed = 0;
+	float enemyCooldown = 3.5f;
 	int stage = 0;
 
 	std::vector<Item*> itemPool = std::vector<Item*>();
@@ -27,8 +28,7 @@ class Core {
 	Enemy* enemy = nullptr;
 
 	static bool ChanceRoll(int totalChance, int myPercentChance);
-	void Fight(Entity* attacker, Entity* target, Action action);
-	static bool SpeedCompare(Player* player, Enemy* enemy);
+	void Fight(Entity* attacker, Entity* target);
 	void AssignWithValue(Item* newItem, int chance);
 
 	void AssignItems();

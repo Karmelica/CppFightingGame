@@ -5,7 +5,7 @@
 
 #include "Item.h"
 
-Player::Player(std::string newName, float newMaxHealth, int newDamage, int newArmor)
+Player::Player(const std::string& newName, float newMaxHealth, int newDamage, int newArmor)
 {
 	Name = newName;
 	BaseMaxHealth = newMaxHealth;
@@ -16,15 +16,15 @@ Player::Player(std::string newName, float newMaxHealth, int newDamage, int newAr
 
 void Player::LevelUp()
 {
-	BaseMaxHealth += 50;
-	Damage += 3;
+	BaseMaxHealth += 30;
+	Damage += 2;
 	BaseArmor += 10;
-	BaseSpeed += 10;
+	BaseAttackCooldown -= 0.01f;
 	printf("\033[1;7m%-26s", "Level up! New base stats:");
 	printf("\nMaxHealth: %-15.f", BaseMaxHealth);
 	printf("\nDamage: %-18d", Damage);
 	printf("\nArmor: %-19d", BaseArmor);
-	printf("\nSpeed: %-19d\033[0m\n\n", BaseSpeed);
+	printf("\nSpeed: %-19.2f\033[0m\n\n", BaseAttackCooldown);
 }
 
 void Player::SelectItem(const std::vector<Item*>* itemPool) {
@@ -44,7 +44,7 @@ void Player::SelectItem(const std::vector<Item*>* itemPool) {
 	} while (randomItem == itemsToSelect->at(0) || randomItem == itemsToSelect->at(1));
 	itemsToSelect->push_back(randomItem);
 
-	printf("\n 1. %s\n 2. %s\n 3. %s\n", itemsToSelect->at(0)->name.c_str(), itemsToSelect->at(1)->name.c_str(), itemsToSelect->at(2)->name.c_str());
+	printf("\n 1. %s\n 2. %s\n 3. %s\n", itemsToSelect->at(0)->Name.c_str(), itemsToSelect->at(1)->Name.c_str(), itemsToSelect->at(2)->Name.c_str());
 
 	do {
 		std::cin >> ans;

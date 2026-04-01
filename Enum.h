@@ -7,8 +7,3 @@ enum Special {
 	EnemyHealthPercent,
 	PercentHealthIncrease
 };
-
-enum Action {
-	Hit,
-	Heal
-};

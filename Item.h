@@ -4,22 +4,22 @@
 
 class Item {
 public:
-	std::string name;
-	float maxHealth;
-	int damage;
-	float damageMultip;
-	int armor;
-	int speed;
-	int crit;
+	std::string Name;
+	float MaxHealth;
+	int Damage;
+	float DamageMultip;
+	int Armor;
+	float Cdr;
+	int Crit;
 	Special special;
 
-	Item(std::string newName, float newMaxHealth, int newDamage, float newDamageMultip, int newArmor, int newCrit, int newSpeed, Special newSpecial = none);
+	Item(const std::string& newName, float newMaxHealth, int newDamage, float newDamageMultip, int newArmor, int newCrit, float newCDR, Special newSpecial = none);
 
 	bool operator<(const Item& other) const {
-		return name < other.name;
+		return Name < other.Name;
 	}
 
 	bool operator==(const Item& other) const {
-		return name == other.name;
+		return Name == other.Name;
 	}
 };

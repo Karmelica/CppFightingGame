@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Enemy::Enemy(std::string newName, float newMaxHealth, int newDamage, int newArmor, int newSpeed)
+Enemy::Enemy(std::string newName, float newMaxHealth, int newDamage, int newArmor, float newCDR)
 {
 	Name = newName;
 
@@ -12,5 +12,5 @@ Enemy::Enemy(std::string newName, float newMaxHealth, int newDamage, int newArmo
 
 	Damage = newDamage;
 	BaseArmor = newArmor;
-	BaseSpeed = newSpeed;
+	BaseAttackCooldown = newCDR;
 }

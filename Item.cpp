@@ -1,15 +1,15 @@
 ﻿#include "Item.h"
 
-Item::Item(std::string newName, float newMaxHealth, int newDamage, float newDamageMultip, int newArmor, int newCrit,
-	int newSpeed, Special newSpecial)
+Item::Item(const std::string& newName, float newMaxHealth, int newDamage, float newDamageMultip, int newArmor, int newCrit,
+	float newCDR, Special newSpecial)
 {
-	name = newName;
-	maxHealth = newMaxHealth;
-	damage = newDamage;
-	damageMultip = newDamageMultip;
-	armor = newArmor;
-	crit = newCrit;
-	speed = newSpeed;
+	Name = newName;
+	MaxHealth = newMaxHealth;
+	Damage = newDamage;
+	DamageMultip = newDamageMultip;
+	Armor = newArmor;
+	Crit = newCrit;
+	Cdr = newCDR;
 	special = newSpecial;
 }
 
