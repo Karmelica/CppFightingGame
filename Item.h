@@ -13,7 +13,7 @@ public:
 	int Crit;
 	Special special;
 
-	Item(const std::string& newName, float newMaxHealth, int newDamage, float newDamageMultip, int newArmor, int newCrit, float newCDR, Special newSpecial = none);
+	Item(const std::string& newName, float newMaxHealth, int newDamage, float newDamageMultip, int newArmor, int newCrit, float newCDR, Special newSpecial = None);
 
 	bool operator<(const Item& other) const {
 		return Name < other.Name;

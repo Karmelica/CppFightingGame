@@ -57,6 +57,8 @@ void Core::AssignItems() {
 	AssignWithValue(newItem, 1);
 	newItem = new Item("\033[33mDrill (Deal damage based on enemy health)\033[0m", 0, 0, 0, 0, 0, 0, EnemyHealthPercent);
 	AssignWithValue(newItem, 10);
+	newItem = new Item("\033[33mSteal (Steal enemy damage)\033[0m", 0, 0, 0, 0, 0, 0, DamageSteal);
+	AssignWithValue(newItem, 10);
 	newItem = new Item("\033[33mShiny Stone (Gain damage based on your armor)\033[0m", 0, 0, 0, 10, 0, 0, ArmorToDamage);
 	AssignWithValue(newItem, 10);
 	newItem = new Item("\033[33mBad Apple (Gain damage based on your health)\033[0m", 0, 0, 0, 0, 0, 0, HealthToDamage);
@@ -149,23 +151,27 @@ void Core::Update(float deltaTime)
 		return;
 	}
 
-	if (player->CurrentHealth > 0.f && enemy->CurrentHealth > 0.f) {
-		
-		playerCD += deltaTime;
-		enemyCD += deltaTime;
+	if (player->CurrentHealth > 0.f) {
 
-		if (playerCD > player->CurrentAttackCooldown) {
-			Fight(player, enemy);
-			LogStats();
-			playerCD = 0.f;
-		}
-		if (enemyCD > enemy->CurrentAttackCooldown) {
-			Fight(enemy, player);
-			LogStats();
-			enemyCD = 0.f;
-		}
+		playerCD += deltaTime;
 	}
-	else {
+	if (enemy->CurrentHealth > 0.f)
+	{
+		enemyCD += deltaTime;
+	}
+
+	if (playerCD > player->CurrentAttackCooldown) {
+		Fight(player, enemy);
+		LogStats();
+		playerCD = 0.f;
+	}
+	if (enemyCD > enemy->CurrentAttackCooldown) {
+		Fight(enemy, player);
+		LogStats();
+		enemyCD = 0.f;
+	}
+	
+	if (player->CurrentHealth < 0.f || enemy->CurrentHealth < 0.f) {
 		fightFinished = true;
 	}
 

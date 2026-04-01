@@ -1,9 +1,10 @@
 #pragma once
 
 enum Special {
-	none,
+	None,
 	HealthToDamage,
 	ArmorToDamage,
 	EnemyHealthPercent,
-	PercentHealthIncrease
+	PercentHealthIncrease,
+	DamageSteal
 };

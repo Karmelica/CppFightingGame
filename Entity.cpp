@@ -16,7 +16,7 @@ void Entity::CalculateStatsFromItems() {
 		CurrentMaxHealth += item.first->MaxHealth * item.second;
 		switch (item.first->special)
 		{
-		case none:
+		case None:
 			break;
 		case PercentHealthIncrease:
 			healthPercent += 0.05f * item.second;
@@ -42,6 +42,21 @@ void Entity::CalculateStatsFromItems() {
 	CurrentDamage =  Damage;
 	for (const auto& item : Items) {
 		CurrentDamage += item.first->Damage * item.second;
+		switch (item.first->special)
+		{
+		case None:
+			break;
+		case PercentHealthIncrease:
+			break;
+		case HealthToDamage:
+			CurrentDamage += ceilf((CurrentMaxHealth * 0.01f) * (5 + item.second));
+			break;
+		case ArmorToDamage:
+			CurrentDamage += ceilf((CurrentArmor * 0.01f) * (5 + item.second));
+			break;
+		case EnemyHealthPercent:
+			break;
+		}
 	}
 
 	//CurrentAttackCooldown
@@ -58,17 +73,18 @@ float Entity::CalculateDamage(Entity* target, int critChance, bool didCrit) cons
 	float baseDamage = CurrentDamage;
 	for (const auto& item : Items) {
 		switch (item.first->special) {
-		case none:
+		case None:
 			break;
 		case HealthToDamage:
-			baseDamage += (CurrentMaxHealth * 0.01f) * (5 + item.second);
 			break;
 		case ArmorToDamage:
-			baseDamage += (CurrentArmor * 0.01f) * (5 + item.second);
 			break;
 		case EnemyHealthPercent:
 			targetHealthDamage = (target->CurrentMaxHealth * 0.05f) * item.second;
 			baseDamage += targetHealthDamage;
+			break;
+		case DamageSteal:
+			baseDamage += floorf(target->CurrentDamage * 0.1f) * item.second;
 			break;
 		default: 
 			break;
@@ -90,7 +106,7 @@ float Entity::CalculateDamage(Entity* target, int critChance, bool didCrit) cons
 float Entity::CalculateCritDamageMultip(int critChance)
 {
 	if (critChance > 100)
-		return 1.5f + static_cast<float>(critChance - 100) * 0.005f;
+		return 1.5f + static_cast<float>(critChance - 100) * 0.01f;
 	return 1.5f;
 }
 
@@ -105,8 +121,8 @@ int Entity::CalculateCritChance() const
 
 float Entity::CalculateReduction() const
 {
-	const int totalArmor = CurrentArmor;
-	return 1 - static_cast<float>(totalArmor) / (static_cast<float>(totalArmor) + Core::ArmorConstant);
+	const float totalArmor = static_cast<float>(CurrentArmor);
+	return 1 - totalArmor / (totalArmor + Core::ArmorConstant);
 }
 
 std::string Entity::GiveRandomItem(const std::vector<Item*>* itemPool) {
